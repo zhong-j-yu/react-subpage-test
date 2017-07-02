@@ -72,12 +72,7 @@ const Test = ({children, title, pager})=>
 const Test0 = ({pager})=>
   <Test title="react-subpage Browser Tests">
     <pre>{`  known issues --
-      Safari 5.0 - pager.state not working, coz history.state is not supported.
-
-      click hash url: <a href="#foo">
-        not working on IE 9-11. (but OK on Edge) popstate not fired.
-        https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/3740423/
-        we won't fix it. app should use onClick().
+      Safari 5.1 (windows) - pager.state not working, coz history.state is not supported.
     `}</pre>
     <p>
       This is a collection of tests of <b>react-subpage</b> package,
@@ -280,6 +275,7 @@ const Test7 = ({pager, onRequestTime})=>
 urlMap['/test7'] = Test7;
 
 Test7.onRequest=(page,props,pager)=>{
+  // props.x = 1; // props is frozen
   props={onRequestTime:new Date().toString()};
   return pager.view(page, props);
 }
@@ -382,11 +378,11 @@ const Test10 = ({pager})=>
   </p>
   <p>pager.push:</p>
   <p>{link('test 10 B', pager, Test10B)}</p>
-  <p>{link('test 10 C', pager, Test10C, {foo:'bar'})}</p>
+  <p>{link('test 10 C, {foo:bar}', pager, Test10C, {foo:'bar'})}</p>
   <p>(NO MOCK) simple anchor</p>
   <p><a href="#B">#B</a></p>
   <p><a href="/test10#C/bar">/test10#C/bar</a></p>
-  <div><hr/>{link('>> TestX', pager, TestX)}</div>
+  <div><hr/>{link('>> Test11', pager, Test11)}</div>
   </Test>
 urlMap['/test10'] = Test10;
 
@@ -396,6 +392,26 @@ urlMap['/test10#B']=Test10B;
 const Test10C = ({foo})=>
   <div><MockHistory/>This is Test 10 C page. foo={String(foo)}</div>
 urlMap['/test10#C/:foo']=Test10C;
+
+//=============================================================================
+
+const Test11 = ({foo, pager, pager:{A}, style={color:'red'}})=>
+  <Test title="pager.A">
+  <p>
+    const A = pager.A; <br/>
+    &lt;A page={'{'}SomePage{'}'} &gt;
+  </p>
+  <h3> foo={String(foo)}</h3>
+  <p> <A page={Test11}>page=Test11</A>  </p>
+  <p> <A page={Test11} $foo='bar' >$foo=bar</A>  </p>
+  <p> <A page={Test11} props={{foo:'car'}} $foo='bar'>props=foo:car $foo=bar</A>  </p>
+  <p> <A replace page={Test11} $foo={'dar'}>replace $foo=dar</A>  </p>
+  <p> <A page={Test11} $foo='far' style={style} title='a title'>$foo=far, other-props, <b>plural</b> children</A>  </p>
+  <p> <A page={Test11}></A> - no children </p>
+  <p> <A page={Test11} href="javascript:void(0)" onClick={e=>{alert('boo')}}>override: href, onClick</A>  </p>
+  <div><hr/>{link('>> TestX', pager, TestX)}</div>
+  </Test>
+urlMap['/test11/:foo?'] = Test11;
 
 //=============================================================================
 
