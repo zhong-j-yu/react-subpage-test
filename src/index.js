@@ -364,6 +364,10 @@ const Test9 = ({pager})=>
     }}>replace() with save/restore state</button>
     - the state persists.
   </p>
+  <p>
+    input value persisted in pager.state:
+    <input defaultValue={pager.state} onChange={e=>pager.state=e.target.value}/>
+  </p>
   <div><hr/>{link('>> Test10', pager, Test10)}</div>
   </Test>
 urlMap['/test9'] = Test9;
@@ -404,7 +408,7 @@ const Test11 = ({foo, pager, pager:{A}, style={color:'red'}})=>
   <h3> foo={String(foo)}</h3>
   <p> <A page={Test11}>page=Test11</A>  </p>
   <p> <A page={Test11} $foo='bar' >$foo=bar</A>  </p>
-  <p> <A page={Test11} props={{foo:'car'}} $foo='bar'>props=foo:car $foo=bar</A>  </p>
+  <p> <A page={Test11} props={{foo:'bar'}} $foo='car'>props=foo:bar $foo=car</A>  </p>
   <p> <A replace page={Test11} $foo={'dar'}>replace $foo=dar</A>  </p>
   <p> <A page={Test11} $foo='far' style={style} title='a title'>$foo=far, other-props, <b>plural</b> children</A>  </p>
   <p> <A page={Test11}></A> - no children </p>
